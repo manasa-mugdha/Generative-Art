@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maurer Rose</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+    <script>
+        let n;
+        let d;
+
+        function setup() {
+            createCanvas(500, 500);
+            angleMode(DEGREES);
+            resetSketch();
+        }
+
+        function resetSketch() {
+            n = 2;
+            d = 71;
+        }
+
+        function draw() {
+            background(255);
+            translate(width / 2, height / 2);
+            noFill();
+            beginShape();
+            for (let i = 0; i < 361; i++) {
+                let k = i * d;
+                let r = 200 * sin(n * k);
+                let x = r * cos(k);
+                let y = r * sin(k);
+                vertex(x, y);
+            }
+            endShape();
+            n += 0.000025;
+            d += 0.000085;
+        }
+    </script>
+</body>
+</html>
