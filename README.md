@@ -1,1 +1,1 @@
-# Generative-Art-using-Python
+# Generative-Art
