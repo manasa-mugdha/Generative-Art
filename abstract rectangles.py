@@ -1,7 +1,7 @@
 #its a google colab specific code
 
 from PIL import Image, ImageDraw
-from IPython.display import display
+from IPython.display import display #used in google colab
 
 import random
 
