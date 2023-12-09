@@ -1,0 +1,88 @@
+import pygame
+import sys
+import math
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 500, 500
+FPS = 30  # Decreased frame rate
+WHITE = (255, 255, 255)
+
+# Initialize screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Deformed Circles")
+
+# Colors
+colors = [
+    [(188, 216, 193), (214, 219, 178), (227, 217, 133), (229, 122, 68)],
+    [(219, 177, 188), (211, 196, 227), (143, 149, 211), (137, 218, 255)],
+    [(191, 107, 99), (217, 163, 132), (91, 158, 166), (169, 212, 217)]
+]
+
+# Variables
+variation = 10
+radius = 350
+growing = False
+
+def reset_sketch():
+    global radius, random_colors
+    radius = 350
+    random_colors = random.randint(0, 2)
+
+def deformed_circle(x, y, r, random_colors):
+    points = []
+    for i in range(0, 360, 15):
+        p = (r / 2 * math.sin(math.radians(i)), r / 2 * math.cos(math.radians(i)))
+        points.append(p)
+
+    final = []
+    for point in points:
+        x_change = point[0] / variation
+        y_change = point[1] / variation
+        change = random.uniform(-3, 3)
+        new_point = (point[0] + x_change * change, point[1] + y_change * change)
+        final.append(new_point)
+
+    rand = random.randint(0, 3)
+    pygame.draw.polygon(screen, colors[random_colors][rand], [(x + p[0], y + p[1]) for p in final], 0)
+
+def main():
+    global growing, radius
+
+    clock = pygame.time.Clock()
+    running = True
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        screen.fill(WHITE)
+
+        current_size = radius
+        while current_size >= 0:
+            deformed_circle(WIDTH // 2, HEIGHT // 2, current_size, random_colors)
+            current_size -= 20
+
+        if radius <= 1:
+            growing = True
+        elif radius >= 350:
+            growing = False
+
+        if growing:
+            radius += 5  # Decreased growth speed
+        else:
+            radius -= 2  # Decreased shrink speed
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    reset_sketch()
+    main()
